@@ -32,19 +32,20 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # Étape 5 : Transférer les fichiers sur le serveur
+      # Étape 5 : Créer le répertoire distant
+      - name: Create remote directory
+        run: ssh debian@51.195.42.221 "mkdir -p /home/debian/temp/"
+
+      # Étape 6 : Transférer les fichiers sur le serveur
       - name: Deploy files to server
         run: scp -r dist/* debian@51.195.42.221:/home/debian/temp/
 
-      # Étape 6 : Déplacer les fichiers dans le bon répertoire sur le serveur
+      # Étape 7 : Déplacer les fichiers dans le bon répertoire
       - name: Move files to web directory
         run: |
           ssh debian@51.195.42.221 << 'EOF'
-          # Supprimez l'ancienne version du site
           sudo rm -rf /var/www/cicd.matheobatelier.fr/*
-          # Déplacez les nouveaux fichiers dans le répertoire du site
           sudo mv /home/debian/temp/* /var/www/cicd.matheobatelier.fr/
-          # Fixez les permissions
           sudo chown -R www-data:www-data /var/www/cicd.matheobatelier.fr/
           sudo chmod -R 755 /var/www/cicd.matheobatelier.fr/
           EOF
