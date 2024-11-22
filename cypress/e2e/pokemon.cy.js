@@ -1,6 +1,6 @@
-describe('template spec', () => {
+describe("Page d'accueil", () => {
   it('passes', () => {
-    cy.visit('http://localhost:5173');
+    cy.visit('/');
     expect(cy.contains('Rechercher')).to.exist;
   });
 });

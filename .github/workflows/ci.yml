@@ -1,0 +1,65 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-and-build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Cloner le dépôt
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Configurer Node.js avec le cache
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
+
+      # Étape 3 : Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # Étape 4 : Vérifier le formatage avec Prettier
+      - name: Run Prettier
+        run: npm run format
+
+      # Étape 5 : Lancer ESLint
+      - name: Run ESLint
+        run: npm run lint
+
+      # Étape 6 : Vérifier les types avec TypeScript
+      - name: TypeScript Type Check
+        run: npm run type-check
+
+      # Étape 7 : Construire le projet
+      - name: Build Project
+        run: npm run build
+
+      # Étape 8 : Démarrer l'application pour Cypress
+      - name: Start Application
+        run: npm start &
+        env:
+          NODE_ENV: test
+
+      # Étape 9 : Attendre que l'application soit prête
+      - name: Wait for application to be ready
+        run: npx wait-on http://localhost:3000
+
+      # Étape 10 : Lancer Cypress
+      - name: Run Cypress E2E Tests
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          headless: true
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
