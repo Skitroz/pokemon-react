@@ -1,0 +1,37 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Cloner le dépôt
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Configurer l'agent SSH
+      - name: Add SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Étape 3 : Ajouter le serveur distant aux "known_hosts"
+      - name: Add server to known_hosts
+        run: |
+          ssh-keyscan -H 51.195.42.221 >> ~/.ssh/known_hosts
+
+      # Étape 4 : Installer les dépendances et construire le projet
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      # Étape 5 : Transférer les fichiers sur le serveur
+      - name: Deploy files to server
+        run: scp -r dist/* debian@51.195.42.221:/home/debian/

@@ -57,4 +57,4 @@ jobs:
 
       # Étape 10 : Lister les fichiers sur le serveur distant
       - name: List files on remote server
-        run: ssh -o StrictHostKeyChecking=no debian@51.195.42.221 "ls -al"
+        run: ssh -o StrictHostKeyChecking=no debian@51.195.42.221 "ls"
