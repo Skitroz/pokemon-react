@@ -1,4 +1,4 @@
-name: Lint and Format Check
+name: CI Pipeline
 
 on:
   push:
@@ -9,18 +9,24 @@ on:
       - main
 
 jobs:
-  lint:
+  lint-and-build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up Node.js
         uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          cache-dependency-path: ./package-lock.json
       - name: Install dependencies
         run: npm install
-      - name: Run ESLint
-        run: npm run lint
       - name: Run Prettier
         run: npm run format
+      - name: Run ESLint
+        run: npm run lint
+      - name: TypeScript Type Check
+        run: npm run type-check
       - name: Build Project
         run: npm run build
