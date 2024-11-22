@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/ui/modal";
-import { FaSpinner } from "react-icons/fa";
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/ui/modal';
+import { FaSpinner } from 'react-icons/fa';
 
 type Card = {
   id: string;
@@ -73,7 +73,7 @@ type Card = {
 };
 
 export default function App() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [cards, setCards] = useState<Card[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,17 +89,17 @@ export default function App() {
     setError(null);
     try {
       const response = await fetch(
-        `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}&pageSize=${pageSize}&page=${page}`,
+        `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}&pageSize=${pageSize}&page=${page}`
       );
       if (!response.ok) {
-        throw new Error("Erreur lors de la recherche.");
+        throw new Error('Erreur lors de la recherche.');
       }
       const data = await response.json();
       setCards(data.data);
       setTotalCount(data.totalCount);
       setCurrentPage(page);
     } catch (error) {
-      console.error("Erreur lors de la recherche : ", error);
+      console.error('Erreur lors de la recherche : ', error);
       setError((error as Error).message);
     } finally {
       setIsSearching(false);
@@ -140,7 +140,7 @@ export default function App() {
           className="flex-grow"
         />
         <Button onClick={() => searchPokemon(1)} disabled={isSearching}>
-          {isSearching ? <FaSpinner className="animate-spin" /> : "Rechercher"}
+          {isSearching ? <FaSpinner className="animate-spin" /> : 'Rechercher'}
         </Button>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
@@ -183,7 +183,7 @@ export default function App() {
                             <strong>{attack.name}</strong> : {attack.text} (
                             {attack.damage
                               ? `${attack.damage} dmg`
-                              : "No damage"}
+                              : 'No damage'}
                             )
                           </li>
                         ))
@@ -245,7 +245,7 @@ export default function App() {
                 )}
                 {selectedCard.types && (
                   <li>
-                    <strong>Types:</strong> {selectedCard.types.join(", ")}
+                    <strong>Types:</strong> {selectedCard.types.join(', ')}
                   </li>
                 )}
                 {selectedCard.supertype && (
@@ -255,8 +255,8 @@ export default function App() {
                 )}
                 {selectedCard.subtypes && (
                   <li>
-                    <strong>Subtypes:</strong>{" "}
-                    {selectedCard.subtypes.join(", ")}
+                    <strong>Subtypes:</strong>{' '}
+                    {selectedCard.subtypes.join(', ')}
                   </li>
                 )}
                 {selectedCard.level && (
@@ -266,23 +266,23 @@ export default function App() {
                 )}
                 {selectedCard.weaknesses && (
                   <li>
-                    <strong>Faiblesses:</strong>{" "}
+                    <strong>Faiblesses:</strong>{' '}
                     {selectedCard.weaknesses
                       .map((w) => `${w.type} (${w.value})`)
-                      .join(", ")}
+                      .join(', ')}
                   </li>
                 )}
                 {selectedCard.retreatCost && (
                   <li>
-                    <strong>Coût de retraite:</strong>{" "}
-                    {selectedCard.retreatCost.join(", ")} (
+                    <strong>Coût de retraite:</strong>{' '}
+                    {selectedCard.retreatCost.join(', ')} (
                     {selectedCard.convertedRetreatCost})
                   </li>
                 )}
                 {selectedCard.evolvesTo && (
                   <li>
-                    <strong>Évolue en:</strong>{" "}
-                    {selectedCard.evolvesTo.join(", ")}
+                    <strong>Évolue en:</strong>{' '}
+                    {selectedCard.evolvesTo.join(', ')}
                   </li>
                 )}
                 {selectedCard.set && (
@@ -309,8 +309,8 @@ export default function App() {
                 <ul className="list-disc list-inside">
                   {selectedCard.attacks.map((attack, index) => (
                     <li key={index} className="mb-2">
-                      <strong>{attack.name}</strong> ({attack.cost.join(", ")} -{" "}
-                      {attack.convertedEnergyCost} CC) : {attack.text}{" "}
+                      <strong>{attack.name}</strong> ({attack.cost.join(', ')} -{' '}
+                      {attack.convertedEnergyCost} CC) : {attack.text}{' '}
                       {attack.damage && `(${attack.damage} dmg)`}
                     </li>
                   ))}
