@@ -80,6 +80,7 @@ export default function App() {
   const [totalCount, setTotalCount] = useState(0);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const text: number = "Ca devrait générer une erreur du coup";
 
   const pageSize = 10;
 
