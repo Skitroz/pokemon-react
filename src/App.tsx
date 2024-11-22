@@ -89,7 +89,7 @@ export default function App() {
     setError(null);
     try {
       const response = await fetch(
-        `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}&pageSize=${pageSize}&page=${page}`
+        `https://api.pokemontcg.io/v2/cards?q=name:${searchTerm}&pageSize=${pageSize}&page=${page}`,
       );
       if (!response.ok) {
         throw new Error("Erreur lors de la recherche.");
