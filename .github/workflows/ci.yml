@@ -19,7 +19,7 @@ jobs:
 
       # Étape 2 : Ajouter la clé SSH privée
       - name: Add SSH Key
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -50,3 +50,11 @@ jobs:
       # Étape 8 : Construire le projet
       - name: Build Project
         run: npm run build
+
+      # Étape 9 : Démarrer l'application pour Cypress
+      - name: Start Application
+        run: npm start &
+
+      # Étape 10 : Lister les fichiers sur le serveur distant
+      - name: List files on remote server
+        run: ssh -o StrictHostKeyChecking=no debian@51.195.42.221 "ls -al"
