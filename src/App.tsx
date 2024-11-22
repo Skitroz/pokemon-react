@@ -80,8 +80,6 @@ export default function App() {
   const [totalCount, setTotalCount] = useState(0);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const message =  "Coucouuuuu";
-  const nombre = 10;
 
   const pageSize = 10;
 

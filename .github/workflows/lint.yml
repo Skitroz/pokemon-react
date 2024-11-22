@@ -22,3 +22,5 @@ jobs:
         run: npm run lint
       - name: Run Prettier
         run: npm run format
+      - name: Build Project
+        run: npm run build
